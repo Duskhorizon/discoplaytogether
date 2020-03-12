@@ -119,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pl-pl'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -140,3 +140,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = BASE_DIR
 MEDIA_URL = '/media/'
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
