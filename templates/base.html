@@ -30,7 +30,9 @@
         <div class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" href="{% url 'homepage' %}">Strona Główna</a>
+              {% if user.verified %}
           <a class="nav-item nav-link" href="{% url 'create' %}">Dodaj Event</a>
+              {% endif %}
           <a class="nav-item nav-link" href="javascript:{document.getElementById('account_logout').submit()}" onclick="">Logout</a>
           <form id="account_logout" method="POST" action="{% url 'account_logout' %}">
             {% csrf_token %}
