@@ -1,0 +1,29 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+
+{% block content %}
+
+<h1>{% trans "Logowanie" %}</h1>
+
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>{% blocktrans with site.name as site_name %}Zaloguj się za pomocą discorda{% endblocktrans %}</p>
+
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+
+
+</div>
+{% endif %}
+
+
+
+{% endblock %}

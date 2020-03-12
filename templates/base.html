@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% load static %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <!-- XDSoft DateTimePicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <title>DODAJ EVENT</title>
+</head>
+
+<body>
+
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+      <a class="navbar-brand" href="{% url 'homepage' %}">
+      <img src="{% static 'logo.png' %}" height=30 width=30 class="d-inline-block align-top" />
+      discoplaytogether
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" href="{% url 'homepage' %}">Strona Główna</a>
+          <a class="nav-item nav-link" href="{% url 'create' %}">Dodaj Event</a>
+          <a class="nav-item nav-link" href="javascript:{document.getElementById('account_logout').submit()}" onclick="">Logout</a>
+          <form id="account_logout" method="POST" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            <input type="hidden" />
+          </form>
+          {% else %}
+{#          <a class="nav-item nav-link" href="{% url ''%}">Sign Up</a>#}
+{#          <a class="nav-item nav-link" href="{% url %}">Login</a>#}
+          {% endif %}
+        </div>
+      </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    {% block content %}
+    {% endblock %}
+
+  </div>
+
+  <footer class="text-muted">
+    <div class="container text-center">
+      <p>Duskhorizon {% now "Y" %}</p>
+      </div>
+  </footer>
+
+
+</html>

@@ -1,0 +1,5 @@
+discord
+python-dotenv
+django
+django-allauth
+pillow

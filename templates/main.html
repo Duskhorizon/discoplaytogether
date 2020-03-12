@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+{% if user.verified %}
+
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h1 class="jumbotron-heading">Siemanko {{ user.username }}!</h1>
+        <p class="lead text-muted">Poniżej możesz zobaczyć wszystkie umówione spotkania na granie, możesz też sam stworzyć jedno klikając przycisk poniżej!</p>
+        <p>
+          <a href="{% url 'create' %}" class="btn btn-primary my-2">dodaj!</a>
+        </p>
+        <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="discordavatar"/>
+      </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          {% for event in events.all|dictsort:"start_time" %}
+<a href='{% url 'detail' event.id %}'>
+          <div class="col-md-3">
+            <div class="card mb-1 box-shadow">
+                <img class="card-img-top" src="{{ event.game.image.url }}" />
+  <div class="card-body">
+    <h5 class="card-title">{{ event.title }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ event.game.title }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted"> za: {{ event.start_time|timeuntil }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted"> na: {{ event.server.name }}</h6>
+    <p class="card-text"> graczy : {{ event.players.all|length }}</p>
+      </a>
+  </div>
+            </div>
+          </div>
+          {% endfor %}
+
+
+        </div>
+      </div>
+    </div>
+{% else %}
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h1 class="jumbotron-heading">Siemanko {{ user.username }}!</h1>
+        <p class="lead text-muted">Odezwij się do naszego bota "Zapisywanko Bot" a następnie odśwież stronę ;)</p>
+        <p>
+        </p>
+        <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="discordavatar"/>
+      </div>
+    </section>
+{% endif %}
+
+{% endblock %}
+
+

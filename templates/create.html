@@ -1,0 +1,27 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+
+
+{% if error %}
+{{ error }}
+<br />
+<br />
+{% endif %}
+    <form method="POST" action="{% url 'create' %}">
+{% csrf_token %}
+  <h2 class="mt-4">Dodaj event:</h2>
+    <div class="row mb-1">
+    <div class="col-2 themed-grid-col2">{{ formset }}</div>
+  </div>
+<hr/>
+<input class="btn btn-primary" type ="submit" value="Dodaj!" />
+</form>
+
+{% endblock %}
