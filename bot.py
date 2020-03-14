@@ -43,8 +43,7 @@ def verify_user(user_id):
             account.user.verified = True
             account.user.save()
             return True
-        else:
-            return False
+    return False
 
 
 def check_for_common_guilds(bot, user_id):
