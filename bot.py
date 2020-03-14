@@ -18,16 +18,19 @@ bot = commands.Bot(command_prefix='&')
 @bot.event
 async def on_message(message):
     if message.guild is None and message.author != bot.user:
-        user_id = message.author.id
-        user = bot.get_user(user_id)
-        print(user_id)
-        if verify_user(user_id):
-            await user.send('Dzięki za rejestracje, powiązaliśmy cię z kontem na stronie')
-            await user.send(
-                'Razem znajdujemy się na nastepujących serwerach {}'.format(check_for_common_guilds(bot, user_id)))
-        else:
-            await user.send('Hej, zapraszamy na stronkę www.czarnefiuty.com w celu rejestracji, po jej zakończeniu '
-                            'odezwij się do mnie proszę jeszcze raz')
+        if 'hi' in message.content:
+            user_id = message.author.id
+            user = bot.get_user(user_id)
+            print(user_id)
+            if verify_user(user_id):
+                await user.send('Dzięki za rejestracje, powiązaliśmy cię z kontem na stronie')
+                await user.send(
+                    'Razem znajdujemy się na nastepujących serwerach {} - jak w przyszłości dołączysz do nowego '
+                    'serwera na którym jest nasz bot, odezwij się do mnie ponownie'.format(check_for_common_guilds(
+                        bot, user_id)))
+            else:
+                await user.send('Hej, zapraszamy na stronkę zapisywanko.tk w celu rejestracji, po jej zakończeniu '
+                                'odezwij się do mnie proszę jeszcze raz')
 
 
 def verify_user(user_id):
