@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta
 import os
 import django
-from discord.ext import commands
+import discord
+from discord.ext import commands, tasks
 from dotenv import load_dotenv
+from django.utils import timezone
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'discoplaytogether.settings'
 django.setup()
@@ -60,4 +63,56 @@ def check_for_common_guilds(bot, user_id):
                 return common_guilds
 
 
+def delete_old_events():
+    now = timezone.localtime(timezone.now())
+    for event in Event.objects.all():
+        if event.start_time < now:
+            event.delete()
+            print('skasowalem dziada')
+
+
+async def check_for_participations():
+    now = timezone.localtime(timezone.now())
+    for participation in Participation.objects.all():
+        if participation.notify is True and participation.notified is False:
+            if participation.notify_time < now:
+                participation.notified = True
+                participation.save()
+                time_dif = participation.event.start_time - now
+                time_dif_to_min = divmod(time_dif.seconds,60)
+                usertonotify = participation.player
+                usertonotofifysocial = usertonotify.socialaccount_set.all()[0]
+                print(usertonotofifysocial.uid)
+                user_to_msg = bot.get_user(int(usertonotofifysocial.uid))
+                await user_to_msg.send('Hej niedługo gierka!')
+                embed = discord.Embed(title="Powiadomienie o nadchodzącej grze", url="https://zapisywanko.tk/events/{}".format(participation.event.id), color=0x1f5bd7)
+                embed.set_author(name="Discoplaytogether")
+                embed.set_thumbnail(url="https://zapisywanko.tk/static/logo.png")
+                embed.add_field(name="Gra:", value=participation.event.game.title, inline=False)
+                embed.add_field(name="Serwer ", value=participation.event.server.name, inline=True)
+                embed.add_field(name="Organizator :", value=participation.event.creator.username, inline=True)
+                embed.add_field(name="Zaczyna się za minut:", value=format(time_dif_to_min[0]), inline=True)
+                await user_to_msg.send(embed=embed)
+
+
+class Check(commands.Cog):
+    def __init__(self, bot):
+        self.index = 0
+        self.printer.start()
+        self.bot = bot
+
+    def cog_unload(self):
+        self.printer.cancel()
+
+    @tasks.loop(seconds=10)
+    async def printer(self):
+        try:
+            delete_old_events()
+            await check_for_participations()
+        except Exception as e:
+            print(e)
+            print(e.message)
+
+
+bot.add_cog(Check(bot))
 bot.run(token)

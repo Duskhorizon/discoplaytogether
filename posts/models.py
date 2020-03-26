@@ -32,3 +32,5 @@ class Participation(models.Model):
     player = models.ForeignKey(LocalUser, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     notify = models.BooleanField()
+    notified = models.BooleanField(default=False)
+    notify_time = models.DateTimeField(null=True)

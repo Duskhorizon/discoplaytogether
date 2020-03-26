@@ -50,8 +50,12 @@
     <div class="row">
     <div class="col-4">
   <div class="form-check">
-    <input type="checkbox" name="notify" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">&nbsp;&nbsp;powiadom mnie na discordzie</label>
+  {% if user in event.players.all %}
+      <a href="{% url 'swap_not' event.id %}"><input type="checkbox" name="notify" class="form-check-input" id="exampleCheck1"{% if participation.notify is True %} checked {% endif %}></a>
+  {% else %}
+      <input type="checkbox" name="notify" class="form-check-input" id="exampleCheck1"{% if participation.notify is True %} checked {% endif %}>
+   {% endif %}
+    <label class="form-check-label" for="exampleCheck1" >&nbsp;&nbsp;powiadom mnie na discordzie</label>
   </div>
     </div>
 </div>
@@ -64,11 +68,24 @@
   </div>
 </div>
 
+<div class="row pt-2">
+  <div class="col-4">
+    <h4>na serwerze: {{ event.server.name }}</h4>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-8">
     <p>{{ event.description }}</p>
   </div>
 </div>
+{% if user == event.creator %}
+<div class="row">
+  <div class="col-3">
+   <a href="{% url 'del_ev' event.id %}" class="btn btn-danger btn-lg btn-block">Skasuj!</a>
+  </div>
+</div>
+{% endif %}
 
 <form id="upvote" method="POST" action="{% url 'participate' event.id %}">
   {% csrf_token%}
