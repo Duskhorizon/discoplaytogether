@@ -75,6 +75,7 @@ def swap_not(request, event_id):
         part_to_swap.save()
     else:
         part_to_swap.notify = True
+        part_to_swap.notify_time = event.start_time - timedelta(hours=1)
         part_to_swap.save()
 
     return redirect('detail', event_id)

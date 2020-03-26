@@ -2,6 +2,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script>
+function swap_not() {
+  window.location.href = "{% url 'swap_not' event.id %}";
+}
+</script>
 
 <div class="row">
   <div class="col-1">
@@ -51,7 +56,7 @@
     <div class="col-4">
   <div class="form-check">
   {% if user in event.players.all %}
-      <a href="{% url 'swap_not' event.id %}"><input type="checkbox" name="notify" class="form-check-input" id="exampleCheck1"{% if participation.notify is True %} checked {% endif %}></a>
+      <input type="checkbox" name="notify" class="form-check-input" onclick="swap_not()" id="exampleCheck1"{% if participation.notify is True %} checked {% endif %}>
   {% else %}
       <input type="checkbox" name="notify" class="form-check-input" id="exampleCheck1"{% if participation.notify is True %} checked {% endif %}>
    {% endif %}

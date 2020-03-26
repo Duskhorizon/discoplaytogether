@@ -84,6 +84,7 @@ async def check_for_participations():
                 usertonotofifysocial = usertonotify.socialaccount_set.all()[0]
                 print(usertonotofifysocial.uid)
                 user_to_msg = bot.get_user(int(usertonotofifysocial.uid))
+                print(user_to_msg)
                 await user_to_msg.send('Hej niedługo gierka!')
                 embed = discord.Embed(title="Powiadomienie o nadchodzącej grze", url="https://zapisywanko.tk/events/{}".format(participation.event.id), color=0x1f5bd7)
                 embed.set_author(name="Discoplaytogether")
